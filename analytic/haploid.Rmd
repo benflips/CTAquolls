@@ -1,0 +1,58 @@
+---
+title: "Analytic model of Nature v Nurture"
+author: "Ben Phillips"
+date: "24/02/2020"
+output: pdf_document
+---
+
+# A haploid model
+
+We imagine the simplest case, in which we have a single, biallelic locus in a haploid genome, with allele $A$ conferring immunity from the threat, and allele $a$ conferring susceptibility.  Because individuals carrying $A$ are immune to the threat, they cannot be trained.  Individuals with $a$ however, can receive cultural conditioning and so some portion of individuals with $a$ survive to reproduce.
+
+We treat time as discrete, and following mutation, birth, training, and death (in that order), we find the following recursions.
+
+\begin{align}
+n_A(t+1) &= b(1-d)(1-m)n_A(t) \\
+n_a(t+1) &= bT(1-d)(n_a(t)+mn_A(t))
+\end{align}
+
+Where $b$ is number of births, $d$ is the probability of death, $T$ is the probability of cultural transmission (the probability of an $a+$ individual passing on its $+$ status), and $m$ is the mutation rate.  For simplicity, we have defined mutation as being asymmetric: it is possible to lose function (by $A \rightarrow a$), but not to gain function through the opposite transformation.  
+
+By setting $p(t) = \frac{n_A(t)}{n_A(t)+n_a(t)}$ we can define a recursion for a single variable, $p(t)$, the frequency of the resistance allele in the population.
+
+$$
+p(t+1) = \frac{(1-m)p(t)}{(1-m)p(t)+T(1-p(1-m))}
+$$
+
+We then look for the equilibrium values of this recursion, $\hat p$ which occur when $\Delta p = p(t+1) - p(t) = 0$.  Working through this, and ignoring the trivial equilbrium at $\hat p = 0$, we find that 
+
+$$
+\hat p = \frac{1-m-T}{(1-m)(1-T)}.
+$$
+
+This equilibrium is only valid when $m+T \leq 1$.  We can immediately see that if mutation is not permitted ($m=0$), the resistance allele will run to fixation.  To get a sense of how this equilibrium looks when there is mutation (within the permitted parameter space), we can plot it as a surface describing $\hat p$ at various combinations of $m$ and $T$.
+
+```{r, echo=FALSE}
+m <- seq(0, 1, 0.01) # mutation rate
+t <- seq(0, 1, 0.01) # cultural transmission
+
+pSpace<-expand.grid(m, t)
+
+pHat<-function(m, t){
+  out<-(1-t-m)/((1-t)*(1-m))
+  out[(m+t)>1]<-NA
+  out
+}
+
+eqP <- pHat(pSpace[,1], pSpace[,2])
+eqP<-matrix(eqP, nrow = length(m))
+
+  contour(x = m, 
+          y = t, 
+          z = eqP,
+          frame.plot = FALSE,
+          xlab = "Mutation rate",
+          ylab = "Transmission rate",
+          main = "Equilibrium frequency of resistance allele")
+```
+
