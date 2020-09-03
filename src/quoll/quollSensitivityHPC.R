@@ -17,10 +17,10 @@ n<-100 # number of iterations (test) for PVA
 
 ## High ##
 K<- 1000
-h2<- seq(0, 0.5, 0.05)
+h2<- seq(0, 0.5, 0.05) # heritability
 W0<- 0.38
-CTAe<-seq(0, 1, 0.1) #CTA one-trial efficacy
-CTAh<-seq(0, 1, 0.1) # CTA cultural transmission rate
+CTAe<-seq(0, 1, 0.1) #CTA one-trial efficacy (E in the paper)
+CTAh<-seq(0, 1, 0.1) # CTA cultural transmission rate (T in the paper)
 
 
 #arrays for collecting data

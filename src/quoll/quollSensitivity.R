@@ -10,10 +10,10 @@ n<-1 # number of iterations (test) for PVA
 
 ## High ##
 K<- 1000
-h2<- seq(0, 0.5, 0.05)
-W0<- 0.38
-CTAe<-seq(0, 1, 0.1) #CTA one-trial efficacy
-CTAh<-seq(0, 1, 0.1) # CTA cultural transmission rate
+h2<- seq(0, 0.5, 0.05) # heritability
+W0<- 0.38 # Initial fitness
+CTAe<-seq(0, 1, 0.1) #CTA one-trial efficacy (E in the paper)
+CTAh<-seq(0, 1, 0.1) # CTA cultural transmission rate (T in the paper)
 
 
 #arrays for collecting data
@@ -40,7 +40,7 @@ for (ee in 1:length(CTAe)){
         setTxtProgressBar(pb, i)
         test<-TGF(demPars = pars, 
                   nP = 10, 
-                  nN = 1, 
+                  nN = 1,
                   nI = 1, 
                   W0 = W0, 
                   f0=0.05,
